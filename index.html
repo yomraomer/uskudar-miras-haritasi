@@ -40,7 +40,6 @@
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
     <script>
-        // Google'ın güncel veriyi anlık veren gizli API formatı (Senin tablo ID'n eklendi kanka)
         const spreadsheetId = "1H2UaFvFwq7C8DHye_TsVlEJej7lCB0lczRnty7BS_J8";
         const jsonUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`;
 
@@ -58,34 +57,26 @@
             fetch(jsonUrl)
                 .then(res => res.text())
                 .then(text => {
-                    // Google'ın döndürdüğü özel JSON formatını temizliyoruz kanka
                     const data = JSON.parse(text.substr(47).slice(0, -2));
+                    const rows = data.table.rows;
                     
-                    // Sütun başlıklarını alıyoruz
-                    const headers = data.table.cols.map(col => col.label ? col.label.trim().toLowerCase() : "");
-                    
-                    // Satırları nesneye dönüştürüyoruz
-                    globalLocations = data.table.rows.map((row, index) => {
-                        let cleanRow = {};
-                        row.c.forEach((cell, i) => {
-                            let key = headers[i] || `col_${i}`;
-                            
-                            // Senin tablodaki sütun isimlerine göre esnek eşleştirme yapıyoruz kanka
-                            if (key.includes("id")) cleanRow["id"] = cell ? cell.v : null;
-                            else if (key.includes("isim") || key.includes("ad")) cleanRow["isim"] = cell ? cell.v : "";
-                            else if (key.includes("kategori")) cleanRow["kategori"] = cell ? cell.v : "";
-                            else if (key.includes("enlem") || key.includes("lat")) cleanRow["enlem"] = cell ? cell.v : "";
-                            else if (key.includes("boylam") || key.includes("lng")) cleanRow["boylam"] = cell ? cell.v : "";
-                            else if (key.includes("aciklama") || key.includes("bilgi")) cleanRow["aciklama"] = cell ? cell.v : "";
-                            else if (key.includes("gorsel") || key.includes("resim") || key.includes("link")) cleanRow["gorsel"] = cell ? cell.v : "";
-                        });
-                        return cleanRow;
-                    }).filter(row => row.isim && row.enlem && row.boylam);
+                    globalLocations = rows.map(row => {
+                        const cells = row.c;
+                        return {
+                            id: cells[0] ? cells[0].v : null,
+                            isim: cells[1] ? cells[1].v : "Bilinmeyen Yapı",
+                            kategori: cells[2] ? cells[2].v : "Genel",
+                            enlem: cells[3] ? cells[3].v : null,
+                            boylam: cells[4] ? cells[4].v : null,
+                            aciklama: cells[5] ? cells[5].v : "",
+                            gorsel: cells[6] ? cells[6].v : ""
+                        };
+                    }).filter(row => row.id && row.enlem && row.boylam);
 
                     setupFilter(globalLocations);
                     displayMarkers(globalLocations);
                 })
-                .catch(err => console.error("Veri yüklenirken hata oluştu kanka:", err));
+                .catch(err => console.error("Hata:", err));
         }
 
         function displayMarkers(locations) {
@@ -101,7 +92,7 @@
                     const popupMarkup = `
                         <div class="popup-content">
                             <h3>${loc.isim}</h3>
-                            <span class="category-badge">${loc.kategori || 'Kültürel Miras'}</span>
+                            <span class="category-badge">${loc.kategori}</span>
                             <img src="${loc.gorsel}" alt="${loc.isim}" onerror="this.src='https://images.unsplash.com/photo-1599707367072-cd6ada2bc375?w=500'">
                             <p>${loc.aciklama || 'Açıklama bulunmuyor.'}</p>
                         </div>
