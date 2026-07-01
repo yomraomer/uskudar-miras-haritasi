@@ -27,7 +27,7 @@
 <body>
 
     <header>
-        <h1>Üsküdar Kültürel Miras Haritası (Dinamik E-Tablo)</h1>
+        <h1>Üsküdar Kültürel Miras Haritası (Canlı Veri Seti)</h1>
         <div class="filter-container">
             <label for="categoryFilter">Kategori Filtrele: </label>
             <select id="categoryFilter">
@@ -44,9 +44,7 @@
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 
     <script>
-        // Senin ellerinle hazırladığın o orijinal Google E-Tablo ID'si kanka!
         const spreadsheetId = "1H2UaFvFwq7C8DHye_TsVlEJej7lCB0lczRnty7BS_J8";
-        // Google'ın verileri bize temiz bir nesne olarak anlık veren canlı JSON çıktısı
         const jsonUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`;
 
         const map = L.map('map').setView([41.0264, 29.0152], 13);
@@ -63,13 +61,12 @@
             fetch(jsonUrl)
                 .then(res => res.text())
                 .then(text => {
-                    // Google'ın döndürdüğü ham veriyi JavaScript'in okuyacağı temiz formata sokuyoruz kanka
                     const data = JSON.parse(text.substr(47).slice(0, -2));
                     const rows = data.table.rows;
                     
-                    // Doğrudan e-tablondaki sütun sıralarına (0, 1, 2, 3...) göre verileri çekiyoruz, hata sıfır!
                     globalLocations = rows.map(row => {
                         const cells = row.c;
+                        // Sütun başlıklarını kontrol edip ilk satırı (başlıkları) eliyoruz kanka
                         return {
                             id: cells[0] ? cells[0].v : null,
                             isim: cells[1] ? cells[1].v : "Bilinmeyen Yapı",
@@ -77,20 +74,19 @@
                             enlem: cells[3] ? cells[3].v : null,
                             boylam: cells[4] ? cells[4].v : null,
                             aciklama: cells[5] ? cells[5].v : "Açıklama bulunmuyor.",
-                            gorsel: cells[6] ? cells[6].v : "" // Doğrudan senin hücreye yapıştırdığın link!
+                            gorsel: cells[6] ? cells[6].v : ""
                         };
-                    }).filter(row => row.id && row.enlem && row.boylam);
+                    }).filter(row => row.id && row.id !== "id" && row.enlem && row.boylam);
 
                     setupFilter(globalLocations);
                     displayMarkers(globalLocations);
                 })
-                .catch(err => console.error("Tablo okunurken hata oluştu kanka:", err));
+                .catch(err => console.error("Hata:", err));
         }
 
         function displayMarkers(locations) {
             markers.clearLayers();
             locations.forEach(loc => {
-                // Olası virgüllü koordinat girişlerini Leaflet için noktaya çeviriyoruz
                 let latStr = loc.enlem ? loc.enlem.toString().replace(',', '.').trim() : "";
                 let lngStr = loc.boylam ? loc.boylam.toString().replace(',', '.').trim() : "";
                 
@@ -102,7 +98,7 @@
                         <div class="popup-content">
                             <h3>${loc.isim}</h3>
                             <span class="category-badge">${loc.kategori}</span>
-                            <!-- referrerpolicy ve crossorigin sayesinde senin tablodaki resimler engelsiz açılacak kanka -->
+                            <!-- Wikipedia engellerini aşmak için tarayıcı gizleme parametreleri eklendi -->
                             <img src="${loc.gorsel}" alt="${loc.isim}" crossorigin="anonymous" referrerpolicy="no-referrer">
                             <p>${loc.aciklama}</p>
                         </div>
