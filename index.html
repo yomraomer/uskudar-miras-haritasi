@@ -38,11 +38,11 @@
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
     <script>
-        // Senin güncellediğin Google E-Tablo CSV Bağlantısı
-        const sheetsCsvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSx4eptHRixmzbXyaUZrqlfXz9hJPWmZHbf32GMMOQWucTIMPFNi4vYFjUHc3ij1P0i2LSYBy3OxVkQ/pub?output=csv";
+        // Google'ın güncel veriyi anlık veren gizli API formatı (Senin tablo ID'n eklendi kanka)
+        const spreadsheetId = "1H2UaFvFwq7C8DHye_TsVlEJej7lCB0lczRnty7BS_J8";
+        const jsonUrl = `https://docs.google.com/spreadsheets/d/${spreadsheetId}/gviz/tq?tqx=out:json`;
 
         const map = L.map('map').setView([41.0264, 29.0152], 13);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -55,40 +55,42 @@
         let globalLocations = [];
 
         function loadData() {
-            Papa.parse(sheetsCsvUrl, {
-                download: true,
-                header: true,
-                skipEmptyLines: true,
-                complete: function(results) {
-                    // Senin tablonun sütun isimlerindeki boşlukları ve karakterleri tamamen tolore eden yeni akıllı eşleştirme mantığı
-                    globalLocations = results.data.map(row => {
+            fetch(jsonUrl)
+                .then(res => res.text())
+                .then(text => {
+                    // Google'ın döndürdüğü özel JSON formatını temizliyoruz kanka
+                    const data = JSON.parse(text.substr(47).slice(0, -2));
+                    
+                    // Sütun başlıklarını alıyoruz
+                    const headers = data.table.cols.map(col => col.label ? col.label.trim().toLowerCase() : "");
+                    
+                    // Satırları nesneye dönüştürüyoruz
+                    globalLocations = data.table.rows.map((row, index) => {
                         let cleanRow = {};
-                        for (let key in row) {
-                            if (key) {
-                                let normKey = key.trim().toLowerCase();
-                                // Sütun isimleri ne olursa olsun doğru havuzda topluyoruz
-                                if (normKey.includes("id")) cleanRow["id"] = row[key];
-                                else if (normKey.includes("isim") || normKey.includes("ad")) cleanRow["isim"] = row[key];
-                                else if (normKey.includes("kategori")) cleanRow["kategori"] = row[key];
-                                else if (normKey.includes("enlem") || normKey.includes("lat")) cleanRow["enlem"] = row[key];
-                                else if (normKey.includes("boylam") || normKey.includes("lng") || normKey.includes("long")) cleanRow["boylam"] = row[key];
-                                else if (normKey.includes("aciklama") || normKey.includes("bilgi")) cleanRow["aciklama"] = row[key];
-                                else if (normKey.includes("gorsel") || normKey.includes("link") || normKey.includes("resim")) cleanRow["gorsel"] = row[key];
-                            }
-                        }
+                        row.c.forEach((cell, i) => {
+                            let key = headers[i] || `col_${i}`;
+                            
+                            // Senin tablodaki sütun isimlerine göre esnek eşleştirme yapıyoruz kanka
+                            if (key.includes("id")) cleanRow["id"] = cell ? cell.v : null;
+                            else if (key.includes("isim") || key.includes("ad")) cleanRow["isim"] = cell ? cell.v : "";
+                            else if (key.includes("kategori")) cleanRow["kategori"] = cell ? cell.v : "";
+                            else if (key.includes("enlem") || key.includes("lat")) cleanRow["enlem"] = cell ? cell.v : "";
+                            else if (key.includes("boylam") || key.includes("lng")) cleanRow["boylam"] = cell ? cell.v : "";
+                            else if (key.includes("aciklama") || key.includes("bilgi")) cleanRow["aciklama"] = cell ? cell.v : "";
+                            else if (key.includes("gorsel") || key.includes("resim") || key.includes("link")) cleanRow["gorsel"] = cell ? cell.v : "";
+                        });
                         return cleanRow;
                     }).filter(row => row.isim && row.enlem && row.boylam);
 
                     setupFilter(globalLocations);
                     displayMarkers(globalLocations);
-                }
-            });
+                })
+                .catch(err => console.error("Veri yüklenirken hata oluştu kanka:", err));
         }
 
         function displayMarkers(locations) {
             markers.clearLayers();
             locations.forEach(loc => {
-                // Koordinatlardaki olası virgülleri noktaya çeviriyoruz ki Leaflet sapıtmasın
                 let latStr = loc.enlem ? loc.enlem.toString().replace(',', '.').trim() : "";
                 let lngStr = loc.boylam ? loc.boylam.toString().replace(',', '.').trim() : "";
                 
