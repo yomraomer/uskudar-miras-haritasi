@@ -48,7 +48,6 @@
         const markers = L.markerClusterGroup();
         map.addLayer(markers);
 
-        // Resim linkleri optimize edilmiş tam liste kanka
         const allLocations = [
             {id:1, isim:"Kız Kulesi", kategori:"Tarihi Yapı", enlem:41.0211, boylam:29.0041, aciklama:"Üsküdar açıklarında bulunan, Roma döneminden beri varlığını sürdüren ikonik yapı.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Istanbul_K%C4%B1z_Kulesi_%2854511155871%29_%28cropped%29.jpg/250px-Istanbul_K%C4%B1z_Kulesi_%2854511155871%29_%28cropped%29.jpg"},
             {id:2, isim:"Mihrimah Sultan Camii", kategori:"Tarihi Camii", enlem:41.0268, boylam:29.0158, aciklama:"Mimar Sinan tarafından Kanuni Sultan Süleyman'ın kızı için yapılan Üsküdar meydanındaki cami.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/37/Mihrimah_Sultan_Mosque_Uskudar_2019.jpg/250px-Mihrimah_Sultan_Mosque_Uskudar_2019.jpg"},
@@ -72,7 +71,7 @@
             {id:20, isim:"Nalçacı Halil Tekkesi", kategori:"Dini ve Manevi Mekan", enlem:41.0215, boylam:29.0211, aciklama:"Aziz Mahmud Hüdayi halifelerinden Nalçacı Halil Efendi adına kurulan tarihi tasavvuf merkezi.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Nalcaci_Halil_Tekke_2014.jpg/250px-Nalcaci_Halil_Tekke_2014.jpg"},
             {id:21, isim:"Sadullah Paşa Yalısı", kategori:"Tarihi Yapı", enlem:41.0385, boylam:29.0312, aciklama:"Çengelköy sahilinde yer alan, geleneksel Osmanlı sivil mimarisinin en eski ve nadide yalı örneklerinden biri.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Sadullah_Pasha_Yali_2014.jpg/250px-Sadullah_Pasha_Yali_2014.jpg"},
             {id:22, isim:"Edhem Eldem Yalısı", kategori:"Tarihi Yapı", enlem:41.0489, boylam:29.0465, aciklama:"Beylerbeyi'nde bulunan, ampir üslubunda inşa edilmiş tarihi Boğaziçi yalısı.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d5/Edhem_Eldem_Yali_2014.jpg/250px-Edhem_Eldem_Yali_2014.jpg"},
-            {id:23, isim:"Kıbrıslı Yalısı", kategori:"Tarihi Yapı", enlem:41.0621, boylam:29.0588, aciklama:"Kandilli sahilinde yer alan, Boğaziçi'nin en geniş cepheli ve tarihi açıdan en önemli yalılarından biri.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Kibrisli_Yali_Kandilli_2014.jpg/250px-Kibrisli_Yali_Kandilli_2014.jpg"},
+            {id:23, isim:"Kıbrıslı Yalısı", kategori:"Tarihi Yapı", enlem:41.0621, boylam:29.0588, aciklama:"Kandilli sahil yer alan, Boğaziçi'nin en geniş cepheli ve tarihi açıdan en önemli yalılarından biri.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Kibrisli_Yali_Kandilli_2014.jpg/250px-Kibrisli_Yali_Kandilli_2014.jpg"},
             {id:24, isim:"Abud Efendi Yalısı", kategori:"Tarihi Yapı", enlem:41.0542, boylam:29.0505, aciklama:"Kandilli sahilinde, görkemli mimarisiyle dikkat çeken 19. yüzyıl sonu Osmanlı yalısı.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Abud_Efendi_Yali_2014.jpg/250px-Abud_Efendi_Yali_2014.jpg"},
             {id:25, isim:"Kont Ostrorog Yalısı", kategori:"Tarihi Yapı", enlem:41.0602, boylam:29.0562, aciklama:"Osmanlı Devleti'nin hukuk danışmanı Kont Ostrorog'a ait, içinde zengin bir kütüphane barındıran Kandilli yalısı.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Count_Ostrorog_Yali_2014.jpg/250px-Count_Ostrorog_Yali_2014.jpg"},
             {id:26, isim:"İskele Camii (Kuzguncuk)", kategori:"Tarihi Camii", enlem:41.0372, boylam:29.0289, aciklama:"Kuzguncuk iskelesinin hemen yanında yer alan, ahşap işçiliği ile ünlü küçük ve samimi sahil camii.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Kuzguncuk_Iskele_Mosque_2014.jpg/250px-Kuzguncuk_Iskele_Mosque_2014.jpg"},
@@ -105,7 +104,7 @@
             {id:53, isim:"Mirzazade Şeyh Mehmed Efendi Camii", kategori:"Tarihi Camii", enlem:41.0292, boylam:29.0215, aciklama:"Osmanlı şeyhülislamlarından Mirzazade ailesi tarafından yaptırılan, ahşap mimarili mahalle camii.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Mirzazade_Mosque_Uskudar_2014.jpg/250px-Mirzazade_Mosque_Uskudar_2014.jpg"},
             {id:54, isim:"Gazi Mehmet Paşa Camii", kategori:"Tarihi Camii", enlem:41.0281, boylam:29.0264, aciklama:"Sadrazam Gazi Mehmet Paşa'nın Üsküdar sırtlarında yaptırdığı, huzurlu bir avluya sahip tarihi ibadethane.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Gazi_Mehmet_Pasha_Mosque_2014.jpg/250px-Gazi_Mehmet_Pasha_Mosque_2014.jpg"},
             {id:55, isim:"Mihrimah Sultan Külliyesi Medresesi", kategori:"Tarihi Yapı", enlem:41.0269, boylam:29.0161, aciklama:"Mimar Sinan'ın Mihrimah Sultan için yaptığı külliyenin günümüzde tıp merkezi olarak kullanılan medrese binası.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Mihrimah_Sultan_Madrasah_2014.jpg/250px-Mihrimah_Sultan_Madrasah_2014.jpg"},
-            {id:56, isim:"Sultan Abdülaziz Av Köşkü", kategori:"Saray ve Kasır", enlem:41.0118, boylam:29.0422, aciklama:"Validebağ Korusu içerisinde yer alan, Sultan Abdülaziz'in dinlenme og av partileri için kullandığı küçük kasır.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Sultan_Abdulaziz_Hunting_Lodge_2014.jpg/250px-Sultan_Abdulaziz_Hunting_Lodge_2014.jpg"},
+            {id:56, isim:"Sultan Abdülaziz Av Köşkü", kategori:"Saray ve Kasır", enlem:41.0118, boylam:29.0422, aciklama:"Validebağ Korusu içerisinde yer alan, Sultan Abdülaziz'in dinlenme ve av partileri için kullandığı küçük kasır.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/Sultan_Abdulaziz_Hunting_Lodge_2014.jpg/250px-Sultan_Abdulaziz_Hunting_Lodge_2014.jpg"},
             {id:57, isim:"Altunizade Camii (İsmail Zühtü Paşa)", kategori:"Tarihi Camii", enlem:41.0225, boylam:29.0389, aciklama:"19. yüzyıl sonunda Altunizade ailesi tarafından barok ve ampir tarz harmanlanarak yapılan görkemli cami.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Altunizade_Mosque_2014.jpg/250px-Altunizade_Mosque_2014.jpg"},
             {id:58, isim:"Altunizade Kültür Merkezi", kategori:"Tarihi Yapı", enlem:41.0219, boylam:29.0392, aciklama:"Geç Osmanlı dönemine ait tarihi bir konağın restore edilmesiyle Üsküdar'a kazandırılan kültür sanat merkezi.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Altunizade_Culture_Center_2014.jpg/250px-Altunizade_Culture_Center_2014.jpg"},
             {id:59, isim:"Hafız İsa Ağa Çeşmesi", kategori:"Tarihi Çeşme", enlem:41.0192, boylam:29.0271, aciklama:"Çinili Camii yakınlarında bulunan, klasik Osmanlı taş işçiliğinin tüm hatlarını taşıyan sokak çeşmesi.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/Hafiz_Isa_Aga_Fountain_2014.jpg/250px-Hafiz_Isa_Aga_Fountain_2014.jpg"},
@@ -115,7 +114,7 @@
             {id:63, isim:"Zeynep Kamil Türbesi", kategori:"Dini ve Manevi Mekan", enlem:41.0145, boylam:29.0222, aciklama:"Hastanenin hemen bahçesinde yer alan, hayırsever çift Zeynep Hanım ve Kamil Paşa'nın ebedi istirahatgahı.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/7/70/Zeynep_Kamil_Tomb_2014.jpg/250px-Zeynep_Kamil_Tomb_2014.jpg"},
             {id:64, isim:"Kartal Baba Türbesi", kategori:"Dini ve Manevi Mekan", enlem:41.0122, boylam:29.0195, aciklama:"Toptaşı semtinde bulunan, halk arasında derin saygı duyulan Osmanlı dönemi erenlerinden Kartal Baba'nın makamı.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Kartal_Baba_Tomb_2014.jpg/250px-Kartal_Baba_Tomb_2014.jpg"},
             {id:65, isim:"Selimiye Camii", kategori:"Tarihi Camii", enlem:41.0028, boylam:29.0155, aciklama:"Sultan III. Selim tarafından Selimiye Kışlası personeli ve bölge halkı için yaptırılan büyük barok cami.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Selimiye_Mosque_Istanbul_2014.jpg/250px-Selimiye_Mosque_Istanbul_2014.jpg"},
-            {id:66, isim:"Selimiye Hamamı", kategori:"Tarihi Yapı", enlem:41.0019, boylam:29.0148, aciklama:"Selimiye Külliyesi'nin bir parçası olan, günümüzde culture merkezi ve kütüphane olarak hizmet veren tarihi hamam.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Selimiye_Hamam_Culture_2014.jpg/250px-Selimiye_Hamam_Culture_2014.jpg"},
+            {id:66, isim:"Selimiye Hamamı", kategori:"Tarihi Yapı", enlem:41.0019, boylam:29.0148, aciklama:"Selimiye Külliyesi'nin bir parçası olan, günümüzde kültür merkezi ve kütüphane olarak hizmet veren tarihi hamam.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Selimiye_Hamam_Culture_2014.jpg/250px-Selimiye_Hamam_Culture_2014.jpg"},
             {id:67, isim:"Selimiye Meydan Çeşmesi", kategori:"Tarihi Çeşme", enlem:41.0031, boylam:29.0159, aciklama:"III. Selim anısına kışla meydanına inşa edilen, ampir tarzdaki anıtsal Osmanlı çeşmesi.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Selimiye_Square_Fountain_2014.jpg/250px-Selimiye_Square_Fountain_2014.jpg"},
             {id:68, isim:"İhsaniye Camii", kategori:"Tarihi Camii", enlem:41.0102, boylam:29.0115, aciklama:"Sultan II. Mahmud döneminde İhsaniye mahallesinin kurulmasıyla inşa edilen geç dönem ahşap camisi.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Ihsaniye_Mosque_Uskudar_2014.jpg/250px-Ihsaniye_Mosque_Uskudar_2014.jpg"},
             {id:69, isim:"Ahmet Fethi Paşa Yalısı", kategori:"Tarihi Yapı", enlem:41.0351, boylam:29.0252, aciklama:"Kuzguncuk sahilinde yer alan, pembe rengi ve büyüleyici mimarisiyle Boğaz'ın en meşhur yalılarından biri.", gorsel:"https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Ahmet_Fethi_Pasha_Yali_2014.jpg/250px-Ahmet_Fethi_Pasha_Yali_2014.jpg"},
@@ -162,7 +161,7 @@
             filterSelect.appendChild(opt);
         });
 
-        // Markerları bas (HATA MODU TAMAMEN TEMİZLENDİ)
+        // REFFERER ENGELİNİ KALDIRAN GÜNCEL POPUP BASMA FONKSİYONU
         function displayMarkers(locations) {
             markers.clearLayers();
             locations.forEach(loc => {
@@ -170,7 +169,7 @@
                     <div class="popup-content">
                         <h3>${loc.isim}</h3>
                         <span class="category-badge">${loc.kategori}</span>
-                        <img src="${loc.gorsel}" alt="${loc.isim}">
+                        <img src="${loc.gorsel}" alt="${loc.isim}" referrerpolicy="no-referrer">
                         <p>${loc.aciklama}</p>
                     </div>
                 `;
